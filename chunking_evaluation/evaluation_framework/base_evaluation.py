@@ -300,7 +300,7 @@ class BaseEvaluation:
 
         docs, metas = self._get_chunks_and_metadata(chunker)
 
-        BATCH_SIZE = 500
+        BATCH_SIZE = 200 # Reduce to prevent having too large requests
         for i in range(0, len(docs), BATCH_SIZE):
             batch_docs = docs[i:i+BATCH_SIZE]
             batch_metas = metas[i:i+BATCH_SIZE]
