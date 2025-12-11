@@ -294,7 +294,7 @@ class BaseEvaluation:
         if collection is None:
             try:
                 self.chroma_client.delete_collection(collection_name)
-            except ValueError as e:
+            except Exception as e: # Fix "auto_questions" Error
                 pass
             collection = self.chroma_client.create_collection(collection_name, embedding_function=embedding_function, metadata={"hnsw:search_ef":50})
 
@@ -381,7 +381,7 @@ class BaseEvaluation:
             #     print("FAILED TO LOAD GENERAL EVALUATION")
             try:
                 self.chroma_client.delete_collection("auto_questions")
-            except ValueError as e:
+            except Exception as e: # Fix "auto_questions" Error
                 pass
             question_collection = self.chroma_client.create_collection("auto_questions", embedding_function=embedding_function, metadata={"hnsw:search_ef":50})
             question_collection.add(
