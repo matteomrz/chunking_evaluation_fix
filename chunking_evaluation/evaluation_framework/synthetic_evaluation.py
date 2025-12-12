@@ -177,35 +177,32 @@ class SyntheticEvaluation(BaseEvaluation):
         with open(corpus_id, 'r') as file:
             corpus = file.read()
 
-        i = 0
-        while i < n:
-            while True:
-                try:
-                    print(f"Trying Query {i}")
-                    questions_list = self.synth_questions_df[self.synth_questions_df['corpus_id'] == corpus_id]['question'].tolist()
-                    if approx:
-                        question, references = self._extract_question_and_approx_references(corpus, 4000, questions_list)
-                    else:
-                        question, references = self._extract_question_and_references(corpus, 4000, questions_list)
-                    if len(references) > 5:
-                        raise ValueError("The number of references exceeds 5.")
-                    
-                    references = [{'content': ref[0], 'start_index': ref[1], 'end_index': ref[2]} for ref in references]
-                    new_question = {
-                        'question': question,
-                        'references': json.dumps(references),
-                        'corpus_id': corpus_id
-                    }
+        for i in range(n):
+            try:
+                print(f"Trying Query {i} for {corpus_id}")
+                questions_list = self.synth_questions_df[self.synth_questions_df['corpus_id'] == corpus_id]['question'].tolist()
+                if approx:
+                    question, references = self._extract_question_and_approx_references(corpus, 4000, questions_list)
+                else:
+                    question, references = self._extract_question_and_references(corpus, 4000, questions_list)
+                if len(references) > 5:
+                    raise ValueError("The number of references exceeds 5.")
+                
+                references = [{'content': ref[0], 'start_index': ref[1], 'end_index': ref[2]} for ref in references]
+                new_question = {
+                    'question': question,
+                    'references': json.dumps(references),
+                    'corpus_id': corpus_id
+                }
 
-                    new_df = pd.DataFrame([new_question])
-                    self.synth_questions_df = pd.concat([self.synth_questions_df, new_df], ignore_index=True)
-                    self._save_questions_df()
+                new_df = pd.DataFrame([new_question])
+                self.synth_questions_df = pd.concat([self.synth_questions_df, new_df], ignore_index=True)
+                self._save_questions_df()
 
-                    break
-                except (ValueError, json.JSONDecodeError) as e:
-                    print(f"Error occurred: {e}")
-                    continue
-            i += 1
+                break
+            except (ValueError, json.JSONDecodeError) as e:
+                print(f"Error occurred: {e}")
+                continue
 
     def _get_synth_questions_df(self):
         if os.path.exists(self.questions_csv_path):
@@ -214,14 +211,12 @@ class SyntheticEvaluation(BaseEvaluation):
             synth_questions_df = pd.DataFrame(columns=['question', 'references', 'corpus_id'])
         return synth_questions_df
 
-    def generate_queries_and_excerpts(self, approximate_excerpts=False, num_rounds = -1, queries_per_corpus = 5):
+    def generate_queries_and_excerpts(self, approximate_excerpts=False, num_rounds = 1, queries_per_corpus = 5):
         self.synth_questions_df = self._get_synth_questions_df()
 
-        rounds = 0
-        while num_rounds == -1 or rounds < num_rounds:
+        for rounds in range(num_rounds):
             for corpus_id in self.corpora_paths:
                 self._generate_corpus_questions(corpus_id, approx=approximate_excerpts, n=queries_per_corpus)
-            rounds += 1
 
     def _get_sim(self, target, references):
         response = self.client.embeddings.create(
