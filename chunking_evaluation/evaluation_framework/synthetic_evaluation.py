@@ -80,7 +80,7 @@ class SyntheticEvaluation(BaseEvaluation):
         tagged_text, tag_indexes = self._tag_text(document)
 
         completion = self.client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-5-mini",
             response_format={ "type": "json_object" },
             max_tokens=600,
             messages=[
@@ -140,7 +140,7 @@ class SyntheticEvaluation(BaseEvaluation):
             prev_questions_str = ""
 
         completion = self.client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-5-mini",
             response_format={ "type": "json_object" },
             max_tokens=600,
             messages=[
