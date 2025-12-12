@@ -82,7 +82,7 @@ class SyntheticEvaluation(BaseEvaluation):
         completion = self.client.chat.completions.create(
             model="gpt-5-mini",
             response_format={ "type": "json_object" },
-            max_completion_tokens=600,
+            # max_completion_tokens=600,
             messages=[
                 {"role": "system", "content": self.question_maker_approx_system_prompt},
                 {"role": "user", "content": self.question_maker_approx_user_prompt.replace("{document}", tagged_text).replace("{prev_questions_str}", prev_questions_str)}
@@ -142,7 +142,7 @@ class SyntheticEvaluation(BaseEvaluation):
         completion = self.client.chat.completions.create(
             model="gpt-5-mini",
             response_format={ "type": "json_object" },
-            max_completion_tokens=600,
+            # max_completion_tokens=600,
             messages=[
                 {"role": "system", "content": self.question_maker_system_prompt},
                 {"role": "user", "content": self.question_maker_user_prompt.replace("{document}", document).replace("{prev_questions_str}", prev_questions_str)}
