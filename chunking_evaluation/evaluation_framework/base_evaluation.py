@@ -136,8 +136,14 @@ class BaseEvaluation:
                 # Use default encoding on other systems
                 with open(corpus_path, 'r') as file:
                     corpus = file.read()
-    
-            current_documents = splitter.split_text(corpus)
+
+            # Allows Implementations from the visual-chunking project to get access to their ParsingResult
+            # Used exclusively for the synthetic evaluation
+            current_documents = splitter.get_chunks_from_corpus_path(corpus_path)
+
+            if current_documents == None:
+                current_documents = splitter.split_text(corpus)
+
             current_metadatas = []
             for document in current_documents:
                 try:
