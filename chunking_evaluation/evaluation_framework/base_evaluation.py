@@ -370,9 +370,9 @@ class BaseEvaluation:
                 questions_client = chromadb.PersistentClient(path=os.path.join(general_benchmark_path, 'questions_db'))
                 if embedding_function.__class__.__name__ == "OpenAIEmbeddingFunction":
                     try:
-                        if embedding_function._model_name == "text-embedding-3-large":
+                        if embedding_function.model_name == "text-embedding-3-large":
                             question_collection = questions_client.get_collection("auto_questions_openai_large", embedding_function=embedding_function)
-                        elif embedding_function._model_name == "text-embedding-3-small":
+                        elif embedding_function.model_name == "text-embedding-3-small":
                             question_collection = questions_client.get_collection("auto_questions_openai_small", embedding_function=embedding_function)
                     except Exception as e:
                         print("Warning: Failed to use the frozen embeddings originally used in the paper. As a result, this package will now generate a new set of embeddings. The change should be minimal and only come from the noise floor of OpenAI's embedding function. The error: ", e)
