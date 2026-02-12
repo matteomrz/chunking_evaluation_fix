@@ -51,6 +51,29 @@ def rigorous_document_search(document: str, target: str):
         raw_search = find_query_despite_whitespace(document, target)
         if raw_search is not None:
             return raw_search
+        
+        # See if there might be skipped text between the front and back
+        # e.g. Header - skipped first part of section - included second part of section
+        # if so return second part of section as the found text
+        else:
+            target_lines = target.split("\n")
+        
+            body_text = ""
+            start_idx = None
+            end_idx = None
+
+            for line in target_lines.reverse():
+                merged = line + "\n" + body_text
+                if not merged in document:
+                    break
+                
+                body_text = merged
+                start_index = document.find(body_text)
+                end_index = start_index + len(body_text)
+            
+            if start_index != None and end_idx != None:
+                return body_text, start_idx, end_idx
+
 
     # Split the text into sentences
     sentences = re.split(r'[.!?]\s*|\n', document)
