@@ -61,19 +61,19 @@ def rigorous_document_search(document: str, target: str):
 
             body_text = target_lines.pop(0)
             
-            start_index = None
-            end_index = None
-
-            for line in target_lines:
-                merged = line + "\n" + body_text
-                if not merged in document:
-                    break
-                
-                body_text = merged
+            if body_text in document:
                 start_index = document.find(body_text)
                 end_index = start_index + len(body_text)
-            
-            if start_index != None and start_index != None:
+
+                for line in target_lines:
+                    merged = line + "\n" + body_text
+                    if not merged in document:
+                        break
+                    
+                    body_text = merged
+                    start_index = document.find(body_text)
+                    end_index = start_index + len(body_text)
+                
                 return body_text, start_index, end_index
 
 
