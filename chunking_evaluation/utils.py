@@ -60,11 +60,11 @@ def rigorous_document_search(document: str, target: str):
             target_lines.reverse()
 
             body_text = target_lines.pop(0)
+            
+            start_index = None
+            end_index = None
 
-            start_idx = None
-            end_idx = None
-
-            for line in target_lines:
+            for line in target_lines.reverse():
                 merged = line + "\n" + body_text
                 if not merged in document:
                     break
@@ -73,8 +73,8 @@ def rigorous_document_search(document: str, target: str):
                 start_index = document.find(body_text)
                 end_index = start_index + len(body_text)
             
-            if start_index != None and end_idx != None:
-                return body_text, start_idx, end_idx
+            if start_index != None and start_index != None:
+                return body_text, start_index, end_index
 
 
     # Split the text into sentences
