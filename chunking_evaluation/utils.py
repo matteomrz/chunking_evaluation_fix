@@ -64,7 +64,7 @@ def rigorous_document_search(document: str, target: str):
             start_index = None
             end_index = None
 
-            for line in target_lines.reverse():
+            for line in target_lines:
                 merged = line + "\n" + body_text
                 if not merged in document:
                     break
