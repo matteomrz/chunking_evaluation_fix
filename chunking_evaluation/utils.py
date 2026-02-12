@@ -57,12 +57,14 @@ def rigorous_document_search(document: str, target: str):
         # if so return second part of section as the found text
         else:
             target_lines = target.split("\n")
-        
-            body_text = ""
+            target_lines.reverse()
+
+            body_text = target_lines.pop(0)
+
             start_idx = None
             end_idx = None
 
-            for line in target_lines.reverse():
+            for line in target_lines:
                 merged = line + "\n" + body_text
                 if not merged in document:
                     break
