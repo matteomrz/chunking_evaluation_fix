@@ -8,8 +8,9 @@ import tiktoken
 
 def find_query_despite_whitespace(document, query):
 
-    # Normalize spaces and newlines in the query
-    normalized_query = re.sub(r'\s+', ' ', query).strip()
+    # Normalize spaces, hyphens and newlines in the query
+    query_cleaned = re.sub(r'-\s+', '', query)
+    normalized_query = re.sub(r'\s+', ' ', query_cleaned).strip()
 
     parts = []
     for word in normalized_query.split():
