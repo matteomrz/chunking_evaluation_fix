@@ -10,9 +10,15 @@ def find_query_despite_whitespace(document, query):
 
     # Normalize spaces and newlines in the query
     normalized_query = re.sub(r'\s+', ' ', query).strip()
+
+    parts = []
+    for word in normalized_query.split():
+        escaped_word = re.escape(word)
+        word_allow_hyphen = r'(?:-\s*)?'.join(list(escaped_word))
+        parts.append(word_allow_hyphen)
     
     # Create a regex pattern from the normalized query to match any whitespace characters between words
-    pattern = r'\s*'.join(re.escape(word) for word in normalized_query.split())
+    pattern = r'\s*'.join(parts)
     
     # Compile the regex to ignore case and search for it in the document
     regex = re.compile(pattern, re.IGNORECASE)
