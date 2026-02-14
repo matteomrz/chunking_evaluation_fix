@@ -90,7 +90,7 @@ def rigorous_document_search(document: str, target: str):
                 
                 return body_text, start_index, end_index
 
-    max_dist = min(40,int(len(target) * 0.4))
+    max_dist = min(20,int(len(target) * 0.2))
     matches = find_near_matches(target, document, max_l_dist=max_dist)
 
     if not matches:
