@@ -14,7 +14,13 @@ def find_query_despite_whitespace(document, query):
 
     parts = []
     for word in normalized_query.split():
-        escaped_chars = [re.escape(c) for c in word]
+        escaped_chars = []
+        for c in word:
+            if c in "'\"":
+                escaped_chars.append("['\"]")
+            else:
+                escaped_chars.append(re.escape(c))
+
         word_allow_hyphen = r'(?:-\s*)?'.join(escaped_chars)
         parts.append(word_allow_hyphen)
     
