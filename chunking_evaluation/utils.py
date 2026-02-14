@@ -8,7 +8,7 @@ import tiktoken
 
 def find_query_despite_whitespace(document, query):
     #Unicode values for all kinds of quotation marks
-    quoation_options = "[\"\'\u201E\u201C\u201A\u2018\u201D\u2019\u00BB\u00AB\u203A\u2039]"
+    quoation_options = "\"\'\u201E\u201C\u201A\u2018\u201D\u2019\u00BB\u00AB\u203A\u2039"
 
     # Normalize spaces, hyphens and newlines in the query
     query_cleaned = re.sub(r'-\s+', '', query)
