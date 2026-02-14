@@ -13,8 +13,8 @@ def find_query_despite_whitespace(document, query):
 
     parts = []
     for word in normalized_query.split():
-        escaped_word = re.escape(word)
-        word_allow_hyphen = r'(?:-\s*)?'.join(list(escaped_word))
+        escaped_chars = [re.escape(c) for c in word]
+        word_allow_hyphen = r'(?:-\s*)?'.join(escaped_chars)
         parts.append(word_allow_hyphen)
     
     # Create a regex pattern from the normalized query to match any whitespace characters between words
