@@ -90,14 +90,14 @@ def rigorous_document_search(document: str, target: str):
                 
                 return body_text, start_index, end_index
 
-
-    matches = find_near_matches(target, document, max_l_dist=10)
+    max_dist = int(len(target) * 0.1)
+    matches = find_near_matches(target, document, max_l_dist=max_dist)
 
     if not matches:
         return None
 
     best_match = min(matches, key=lambda m: m.dist)
-    
+
     return best_match.matched, best_match.start, best_match.end
     
 def get_openai_embedding_function():
