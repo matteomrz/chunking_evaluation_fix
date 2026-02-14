@@ -1,7 +1,6 @@
 from enum import Enum
 import re
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+from fuzzysearch import find_near_matches
 import os
 from chromadb.utils import embedding_functions
 import tiktoken
@@ -92,22 +91,15 @@ def rigorous_document_search(document: str, target: str):
                 return body_text, start_index, end_index
 
 
-    # Split the text into sentences
-    sentences = re.split(r'[.!?]\s*|\n', document)
+    matches = find_near_matches(target, document, max_l_dist=10)
 
-    # Find the sentence that matches the query best
-    best_match = process.extractOne(target, sentences, scorer=fuzz.token_sort_ratio)
-
-    if best_match[1] < 98:
+    if not matches:
         return None
+
+    best_match = min(matches, key=lambda m: m.dist)
     
-    reference = best_match[0]
-
-    start_index = document.find(reference)
-    end_index = start_index + len(reference)
-
-    return reference, start_index, end_index
-
+    return best_match.matched, best_match.start, best_match.end
+    
 def get_openai_embedding_function():
     openai_api_key = os.getenv('OPENAI_API_KEY')
     if openai_api_key is None:

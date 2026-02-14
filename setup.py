@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "tiktoken",
-        "fuzzywuzzy",
+        "fuzzysearch",
         "pandas",
         "numpy",
         "tqdm",
