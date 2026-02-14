@@ -23,7 +23,7 @@ def find_query_despite_whitespace(document, query):
             else:
                 escaped_chars.append(re.escape(c))
 
-        word_allow_hyphen = r'(?:-?\s*)?'.join(escaped_chars)
+        word_allow_hyphen = r'[-\s]*'.join(escaped_chars)
         parts.append(word_allow_hyphen)
     
     # Create a regex pattern from the normalized query to match any whitespace characters between words
